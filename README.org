@@ -1,0 +1,13 @@
+* Encoding
+
+** Description
+
+Byte encoding in C.
+
+** COBS Encoding
+
+Read: [[http://www.stuartcheshire.org/papers/COBSforToN.pdf][S. Cheshire and M. Baker, "Consistent Overhead Byte Stuffing," in ACM SIGCOMM '97, Cannes, France.]]
+
+** Arduino
+
+To use this as an Arduino library, download it as a ZIP and extract the folder to your [[https://www.arduino.cc/en/hacking/libraries][Arduino libraries]] directory, then rename the folder from ~Encoding-master~ to ~Encoding~ and rename all ~*.c~ files to ~*.cpp~.
