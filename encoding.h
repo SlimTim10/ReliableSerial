@@ -4,6 +4,7 @@
 enum EncodingSettings {
 	COBS_ENCODE_MAX_LENGTH = 254,
 	COBS_DECODE_MAX_LENGTH = 255,
+	COBS_BOUNDARY = 0x00,
 };
 
 uint8_t *encodeCOBS(uint8_t *, uint8_t *, size_t);
