@@ -1,6 +1,11 @@
 #ifndef RELIABLE_SERIAL_H
 #define RELIABLE_SERIAL_H
 
-void serialSendPacket(uint8_t *, size_t);
+enum {
+	SERIAL_PACKET_MAX_LENGTH = 255,
+};
+
+void serialSendPacket(uint8_t *, uint8_t);
+uint8_t serialRecvPacket(uint8_t *);
 
 #endif
