@@ -20,26 +20,44 @@ void serialSendPacket(uint8_t *packet, uint8_t length) {
 	Serial.flush();
 }
 
+// Packets are surrounded by null bytes, have two check bytes at the end, and are COBS-encoded
+// Returns the number of bytes received
 uint8_t serialRecvPacket(uint8_t *packet) {
+	// No data available
 	if (Serial.available() == 0) return 0;
-	
+
+	uint8_t buf[SERIAL_PACKET_MAX_LENGTH];
+
+	// Skip until reaching packet data
 	while (Serial.available() > 0) {
 		uint8_t b = Serial.read();
 		
 		if (b != COBS_BOUNDARY) {
-			packet[0] = b;
+			buf[0] = b;
 			break;
 		}
 	}
 
+	// Receive all packet data
 	uint8_t i;
 	for (i = 1; Serial.available() > 0 && i < SERIAL_PACKET_MAX_LENGTH; i++) {
 		uint8_t b = Serial.read();
 		
 		if (b == COBS_BOUNDARY) break;
 		
-		packet[i] = b;
+		buf[i] = b;
 	}
 
-	return i;
+	// COBS decode
+	uint8_t *decPacket = cobsDecode(buf, packet, i);
+	uint8_t decLen = i - 1;
+
+	// Checksum
+	if (check(decPacket, decLen) == false) {
+		return 0;
+	}
+
+	packet = withoutCheckBytes(decPacket, packet, decLen);
+
+	return decLen - 2;
 }
