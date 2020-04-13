@@ -1,7 +1,14 @@
-#include <stdint.h>
-#include <stdio.h>
+#ifndef ENCODING_H
+#define ENCODING_H
 
-#include "encoding.h"
+#include <stdint.h>
+#include <stddef.h>
+
+enum EncodingSettings {
+	COBS_ENCODE_MAX_LENGTH = 254,
+	COBS_DECODE_MAX_LENGTH = 255,
+	COBS_BOUNDARY = 0x00,
+};
 
 /*
 Byte stuffs "length" bytes of data at the location pointed to by "src", writing the output to the location pointed to by "dst". Returns a pointer to "dst".
@@ -10,7 +17,7 @@ Source:
 S. Cheshire and M. Baker, "Consistent Overhead Byte Stuffing," in ACM SIGCOMM '97, Cannes, France.
  */
 #define FinishBlock(X) (*codePtr = (X), codePtr = dst++, code = 0x01)
-uint8_t *encodeCOBS(uint8_t *src, uint8_t *dst, size_t length) {
+uint8_t *cobsEncode(uint8_t *src, uint8_t *dst, size_t length) {
 	if (length > COBS_ENCODE_MAX_LENGTH) {
 		length = COBS_ENCODE_MAX_LENGTH;
 	}
@@ -42,7 +49,7 @@ Decodes "length" bytes of data at the location pointed to by "src", writing the 
 Source:
 S. Cheshire and M. Baker, "Consistent Overhead Byte Stuffing," in ACM SIGCOMM '97, Cannes, France.
  */
-uint8_t *decodeCOBS(uint8_t *src, uint8_t *dst, size_t length) {
+uint8_t *cobsDecode(uint8_t *src, uint8_t *dst, size_t length) {
 	if (length > COBS_DECODE_MAX_LENGTH) {
 		length = COBS_DECODE_MAX_LENGTH;
 	}
@@ -60,3 +67,5 @@ uint8_t *decodeCOBS(uint8_t *src, uint8_t *dst, size_t length) {
 
 	return dstPtr;
 }
+
+#endif

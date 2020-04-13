@@ -14,7 +14,7 @@ void encodeSimple(void) {
 	};
 	size_t len = 12;
 	
-	uint8_t *after = encodeCOBS(before, buf, len);
+	uint8_t *after = cobsEncode(before, buf, len);
 	uint8_t afterLen = len + 1;
 
 	uint8_t expected[COBS_DECODE_MAX_LENGTH] = {
@@ -34,7 +34,7 @@ void encodeLong(void) {
 	}
 	size_t len = COBS_ENCODE_MAX_LENGTH;
 	
-	uint8_t *after = encodeCOBS(before, buf, len);
+	uint8_t *after = cobsEncode(before, buf, len);
 	uint8_t afterLen = len + 1;
 
 	uint8_t expected[COBS_DECODE_MAX_LENGTH];
@@ -53,7 +53,7 @@ void encodeTooLong(void) {
 		before[i] = 0x01;
 	}
 	
-	uint8_t *after = encodeCOBS(before, buf, len);
+	uint8_t *after = cobsEncode(before, buf, len);
 	uint8_t afterLen = len + 1;
 
 	uint8_t expected[COBS_DECODE_MAX_LENGTH];
@@ -74,7 +74,7 @@ void decodeSimple(void) {
 	};
 	size_t len = 13;
 	
-	uint8_t *after = decodeCOBS(before, buf, len);
+	uint8_t *after = cobsDecode(before, buf, len);
 	uint8_t afterLen = len - 1;
 
 	uint8_t expected[COBS_ENCODE_MAX_LENGTH] = {
@@ -94,7 +94,7 @@ void decodeLong(void) {
 	}
 	size_t len = COBS_DECODE_MAX_LENGTH;
 	
-	uint8_t *after = decodeCOBS(before, buf, len);
+	uint8_t *after = cobsDecode(before, buf, len);
 	uint8_t afterLen = len - 1;
 
 	uint8_t expected[COBS_ENCODE_MAX_LENGTH];
@@ -113,7 +113,7 @@ void decodeTooLong(void) {
 		before[i] = 0x01;
 	}
 	
-	uint8_t *after = decodeCOBS(before, buf, len);
+	uint8_t *after = cobsDecode(before, buf, len);
 	uint8_t afterLen = len - 1;
 
 	uint8_t expected[COBS_ENCODE_MAX_LENGTH];
