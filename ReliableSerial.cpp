@@ -1,10 +1,10 @@
-#include <Arduino.h>
-#include <functional.h>
+#include "ReliableSerial.h"
 
 #include "util/encoding.h"
 #include "util/checksum.h"
 
-#include "ReliableSerial.h"
+#include <Arduino.h>
+#include <functional.h>
 
 void serialSendPacket(uint8_t *packet, uint8_t length) {
 	uint8_t *next = withCheckBytes(packet, packet, length);
