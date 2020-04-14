@@ -6,6 +6,6 @@ enum {
 };
 
 void serialSendPacket(uint8_t *, uint8_t);
-uint8_t serialRecvPacket(uint8_t *);
+bool serialRecvPacket(uint8_t *, uint8_t *);
 
 #endif

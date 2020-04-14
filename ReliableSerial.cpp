@@ -21,10 +21,10 @@ void serialSendPacket(uint8_t *packet, uint8_t length) {
 }
 
 // Packets are surrounded by null bytes, have two check bytes at the end, and are COBS-encoded
-// Returns the number of bytes received
-uint8_t serialRecvPacket(uint8_t *packet) {
+// Returns true if a valid packet is received, otherwise false
+bool serialRecvPacket(uint8_t *packet, uint8_t *length) {
 	// No data available
-	if (Serial.available() == 0) return 0;
+	if (Serial.available() == 0) return false;
 
 	uint8_t buf[SERIAL_PACKET_MAX_LENGTH];
 
@@ -54,10 +54,12 @@ uint8_t serialRecvPacket(uint8_t *packet) {
 
 	// Checksum
 	if (check(decPacket, decLen) == false) {
-		return 0;
+		return false;
 	}
 
 	packet = withoutCheckBytes(decPacket, packet, decLen);
 
-	return decLen - 2;
+	*length = decLen - 2;
+
+	return true;
 }
