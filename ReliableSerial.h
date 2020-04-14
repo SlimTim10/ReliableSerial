@@ -1,6 +1,8 @@
 #ifndef RELIABLE_SERIAL_H
 #define RELIABLE_SERIAL_H
 
+#include <stdint.h>
+
 enum {
 	SERIAL_PACKET_MAX_LENGTH = 255,
 };
