@@ -95,7 +95,7 @@ void withoutCheckBytesSmall(void) {
 	
 	uint8_t data[dataLen] = { 0x01, 0x02, 0xF8, 0x04 };
 	uint8_t buf[bufLen];
-	uint8_t *after = withCheckBytes(data, buf, dataLen);
+	uint8_t *after = withoutCheckBytes(data, buf, dataLen);
 	uint8_t expected[expectedLen] = { 0x01, 0x02 };
 
 	assert(memcmp(after, expected, expectedLen) == 0);
