@@ -28,24 +28,22 @@ bool serialRecvPacket(uint8_t *packet, uint8_t *length) {
 
 	uint8_t buf[SERIAL_PACKET_MAX_LENGTH];
 
-	// Skip until reaching packet data
-	while (Serial.available() > 0) {
+	bool skip = true;
+	uint8_t i = 0;
+	while (Serial.available() > 0 && i < SERIAL_PACKET_MAX_LENGTH) {
 		uint8_t b = Serial.read();
 		
-		if (b != COBS_BOUNDARY) {
-			buf[0] = b;
-			break;
+		if (skip) {
+			if (b != COBS_BOUNDARY) {
+				skip = false;
+				buf[i++] = b;
+			}
 		}
-	}
-
-	// Receive all packet data
-	uint8_t i;
-	for (i = 1; Serial.available() > 0 && i < SERIAL_PACKET_MAX_LENGTH; i++) {
-		uint8_t b = Serial.read();
 		
-		if (b == COBS_BOUNDARY) break;
-		
-		buf[i] = b;
+		if (!skip) {
+			if (b == COBS_BOUNDARY) break;
+			buf[i++] = b;
+		}
 	}
 
 	// COBS decode
